@@ -1,0 +1,18 @@
+
+# Managed by Ansible role: nginx_react_proxy
+# Project: {{ hostvars[groups['role_web'][0]].ec2_tags.Project }}
+# Backend: {{ hostvars[groups['role_web'][0]].ec2_tags.Name }}
+# Backend Private IP: {{ hostvars[groups['role_web'][0]].private_ip_address }}
+
+server {
+    listen {{ nginx_proxy_listen_ip }}:{{ nginx_proxy_listen_port }};
+    server_name localhost;
+
+    location / {
+        proxy_pass {{ nginx_proxy_backend_url }};
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}

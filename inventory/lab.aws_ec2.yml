@@ -1,0 +1,26 @@
+---
+plugin: amazon.aws.aws_ec2
+
+regions:
+  - ap-southeast-1
+
+filters:
+  instance-state-name: running
+  tag:Project: ansible-mini
+  tag:Environment: lab
+
+hostnames:
+  - instance-id
+
+compose:
+  ansible_host: private_ip_address
+  ansible_user: "'ubuntu'"
+
+keyed_groups:
+  - key: ec2_tags.Role
+    prefix: role
+    separator: "_"
+
+  - key: ec2_tags.Environment
+    prefix: env
+    separator: "_"
